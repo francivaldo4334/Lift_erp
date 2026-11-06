@@ -1,6 +1,15 @@
-def main():
-    print("Hello from lift-erp!")
+from fastapi import FastAPI
 
 
-if __name__ == "__main__":
-    main()
+app = FastAPI()
+
+
+@app.get("/")
+def read_root():
+    return {"hello": "World"}
+
+
+@app.get("/items/{item_id}")
+def read_item(item_id:int, q:int | None = None):
+    return {"item": item_id, "q": q}
+
