@@ -7,7 +7,18 @@
 </head>
 <body>
     <header>
-        <nav><strong>Meu App FastAPI</strong></nav>
+        <nav>
+            <strong>Meu App FastAPI</strong>
+            {% if auth and auth.is_authenticated %}
+                <span style="margin-left: 15px; color: #2e7d32;">
+                    ● Conectado: <strong>{{ auth.username }}</strong>
+                    {% if auth.rules %}[{{ auth.rules | join(', ') }}]{% endif %}
+                    {% if auth.meta_tags.get('org_slug') %}| Org: {{ auth.meta_tags.get('org_slug') }}{% endif %}
+                </span>
+            {% else %}
+                <span style="margin-left: 15px; color: #888;">○ Visitante (Não autenticado)</span>
+            {% endif %}
+        </nav>
     </header>
 
     <main>

@@ -3,10 +3,20 @@
 {% block content %}
     <h1>Lista de Usuários</h1>
     
+    {% if auth and auth.is_authenticated %}
+        <div style="background-color: #e8f5e9; border: 1px solid #c8e6c9; padding: 10px; margin-bottom: 15px; border-radius: 4px;">
+            <p><strong>Status de Autenticação:</strong> Autenticado via {{ auth.meta_tags.get('auth_provider', 'Bearer') | upper }}</p>
+            <p><strong>Permissões / Regras Ativas:</strong> {{ auth.rules | join(', ') if auth.rules else 'Nenhuma' }}</p>
+            {% if auth.has_rule("Admin") %}
+                <p style="color: #1b5e20;"><strong>⭐ Privilégio de Administrador Ativo</strong></p>
+            {% endif %}
+        </div>
+    {% endif %}
+
     <ul>
         {% for user in users %}
             <li>
-                <strong>{{ user.name }}</strong> - {{ user.role }}
+                <strong>{{ user.name }}</strong> - {{ user.role or user.rule }}
             </li>
         {% else %}
             <li>Nenhum usuário encontrado.</li>
